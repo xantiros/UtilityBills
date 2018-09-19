@@ -10,7 +10,7 @@ namespace UtilityBills.Models
         {
         }
 
-        public Water(int id, double value, DateTime date) : base(id, value, date)
+        public Water(int id, DateTime date, double value, double amount, double price) : base(id, date, value, amount, price)
         {
         }
     }

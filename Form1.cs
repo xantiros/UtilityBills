@@ -22,12 +22,12 @@ namespace UtilityBills
             }
             foreach (var item in waterList)
             {
-                dataGridView1.Rows.Add(item.Id, item.Date.ToString("dd/MM/yyyy"), item.Value,  null);
+                dataGridView1.Rows.Add(item.Id, item.Date.ToString("dd/MM/yyyy"), item.Value, null);
             }
 
-            //first 
+            //first
             //DateTime dateTime = new DateTime(2014, 5, 5);
-            //waterList.Add(new Water(1, 10, dateTime));
+            //waterList.Add(new Water(1, dateTime, 10, 0, 0));
             //dataGridView1.Rows.Add(waterList[0].Date.ToString("dd/MM/yyyy"), waterList[0].Value, null, null);
         }
 
@@ -44,13 +44,13 @@ namespace UtilityBills
             var last_value = waterList.Count;
             vUsed = vValue - waterList[last_value-1].Value;
 
-            Water water1 = new Water(10, vValue, dateTimePicker1.Value);
-            waterList.Add(water1);
-
             vPrice = vUsed * vPriceM3;
             lbResult.Text = vUsed.ToString();
 
             dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
+
+            Water water1 = new Water(10, dateTimePicker1.Value, vValue, vUsed, vPrice);
+            waterList.Add(water1);
 
             XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
             TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");

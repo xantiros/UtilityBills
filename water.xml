@@ -2,22 +2,30 @@
 <ArrayOfWater xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Water>
     <Id>1</Id>
-    <Value>10</Value>
     <Date>2014-05-05T00:00:00</Date>
+    <Value>10</Value>
+    <Amount>0</Amount>
+    <Price>0</Price>
   </Water>
   <Water>
     <Id>10</Id>
-    <Value>111</Value>
-    <Date>2018-09-19T15:53:13.2696532+02:00</Date>
+    <Date>2018-07-11T16:10:29</Date>
+    <Value>20</Value>
+    <Amount>10</Amount>
+    <Price>100</Price>
   </Water>
   <Water>
     <Id>10</Id>
-    <Value>111</Value>
-    <Date>2018-09-19T15:53:13.2696532+02:00</Date>
+    <Date>2018-08-21T16:10:29</Date>
+    <Value>50</Value>
+    <Amount>30</Amount>
+    <Price>150</Price>
   </Water>
   <Water>
     <Id>10</Id>
-    <Value>222</Value>
-    <Date>2018-09-19T15:53:13.2696532+02:00</Date>
+    <Date>2018-08-21T16:10:29</Date>
+    <Value>55</Value>
+    <Amount>5</Amount>
+    <Price>25</Price>
   </Water>
 </ArrayOfWater>
