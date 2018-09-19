@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using UtilityBills.Models;
 
 namespace UtilityBills
@@ -13,10 +15,20 @@ namespace UtilityBills
         {
             InitializeComponent();
 
+            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
+            using (var sr = new StreamReader(@"C:\Users\bklima\source\repos\UtilityBills\water.xml"))
+            {
+                waterList = (List<Water>)xs.Deserialize(sr);
+            }
+            foreach (var item in waterList)
+            {
+                dataGridView1.Rows.Add(item.Id, item.Date.ToString("dd/MM/yyyy"), item.Value,  null);
+            }
+
             //first 
-            DateTime dateTime = new DateTime(2014, 5, 5);
-            waterList.Add(new Water(1, 10, dateTime));
-            dataGridView1.Rows.Add(waterList[0].Date.ToString("dd/MM/yyyy"), waterList[0].Value, null, null);
+            //DateTime dateTime = new DateTime(2014, 5, 5);
+            //waterList.Add(new Water(1, 10, dateTime));
+            //dataGridView1.Rows.Add(waterList[0].Date.ToString("dd/MM/yyyy"), waterList[0].Value, null, null);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -39,6 +51,11 @@ namespace UtilityBills
             lbResult.Text = vUsed.ToString();
 
             dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
+
+            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
+            TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");
+            xs.Serialize(tw, waterList);
+            tw.Close();
         }
     }
 }

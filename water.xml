@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfWater xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Water>
+    <Id>1</Id>
+    <Value>10</Value>
+    <Date>2014-05-05T00:00:00</Date>
+  </Water>
+  <Water>
+    <Id>10</Id>
+    <Value>111</Value>
+    <Date>2018-09-19T15:53:13.2696532+02:00</Date>
+  </Water>
+  <Water>
+    <Id>10</Id>
+    <Value>111</Value>
+    <Date>2018-09-19T15:53:13.2696532+02:00</Date>
+  </Water>
+  <Water>
+    <Id>10</Id>
+    <Value>222</Value>
+    <Date>2018-09-19T15:53:13.2696532+02:00</Date>
+  </Water>
+</ArrayOfWater>

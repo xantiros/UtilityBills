@@ -4,9 +4,9 @@ namespace UtilityBills
 {
     public class Utility
     {
-        public int Id { get; private set; }
-        public double Value { get; private set; }
-        public DateTime Date { get; private set; }
+        public int Id { get; set; }
+        public double Value { get; set; }
+        public DateTime Date { get; set; }
 
         public Utility()
         {

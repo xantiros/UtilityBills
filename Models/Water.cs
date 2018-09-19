@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace UtilityBills.Models
 {
+    [XmlInclude(typeof(Utility))]
     public class Water : Utility
     {
         public Water()
