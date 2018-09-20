@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 using System.Xml.Serialization;
 
 namespace UtilityBills.Models
@@ -6,11 +7,12 @@ namespace UtilityBills.Models
     [XmlInclude(typeof(Utility))]
     public class Water : Utility
     {
+
         public Water()
         {
         }
 
-        public Water(int id, DateTime date, double value, double amount, double price) : base(id, date, value, amount, price)
+        public Water(ObjectId id, DateTime date, double value, double amount, double price) : base(id, date, value, amount, price)
         {
         }
     }
