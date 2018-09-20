@@ -38,9 +38,40 @@ namespace UtilityBills
  
             foreach (var item in waterList)
             {
-                dataGridView1.Rows.Add(item.Id, item.Date.ToString("dd/MM/yyyy"), item.Value, null);
+                dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
             }
+            //works
+            var collection = db.GetCollection<Water>("Water");
+            Water water1 = new Water(DateTime.Now, 10, 10, 10);
+            collection.InsertOne(water1);
 
+        }
+
+        private void MongoAdd()
+        {
+            double vUsed, vValue, vPriceM3, vPrice;
+            //Check if the thextbox is empty
+            if (string.IsNullOrEmpty(tbValue.Text) || string.IsNullOrEmpty(tbPriceM3.Text))
+                return;
+            //Check if the textbox contain only numbers
+            if (!double.TryParse(tbValue.Text, out vValue) || !double.TryParse(tbPriceM3.Text, out vPriceM3))
+                return;
+
+            var last_value = waterList.Count;
+            vUsed = vValue - waterList[last_value - 1].Value;
+
+            vPrice = vUsed * vPriceM3;
+            lbResult.Text = vUsed.ToString();
+
+            dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
+
+            Water water1 = new Water(dateTimePicker1.Value, vValue, vUsed, vPrice);
+            waterList.Add(water1);
+         
+            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
+            TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");
+            xs.Serialize(tw, waterList);
+            tw.Close();
         }
 
         private void XmlConnect()
@@ -52,7 +83,7 @@ namespace UtilityBills
             }
             foreach (var item in waterList)
             {
-                dataGridView1.Rows.Add(item.Id, item.Date.ToString("dd/MM/yyyy"), item.Value, null);
+                dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
             }
 
             //first
@@ -79,8 +110,8 @@ namespace UtilityBills
 
             dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
 
-            //Water water1 = new Water("5ba389e6d42a63cd58fdaf06", dateTimePicker1.Value, vValue, vUsed, vPrice);
-           // waterList.Add(water1);
+            Water water1 = new Water(dateTimePicker1.Value, vValue, vUsed, vPrice);
+            waterList.Add(water1);
 
             XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
             TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");

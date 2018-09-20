@@ -15,6 +15,13 @@ namespace UtilityBills
         public Utility()
         {
         }
+        public Utility(DateTime date, double value, double amount, double price)
+        {
+            Date = date;
+            Value = value;
+            Amount = amount;
+            Price = price;
+        }
         public Utility(ObjectId id, DateTime date, double value, double amount, double price)
         {
             Id = id;
