@@ -5,10 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using UtilityBills.Models;
-using MongoDB.Driver.Linq;
 using System.Linq;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson;
 
 namespace UtilityBills
 {
@@ -40,38 +37,15 @@ namespace UtilityBills
             {
                 dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
             }
-            //works
-            var collection = db.GetCollection<Water>("Water");
-            Water water1 = new Water(DateTime.Now, 10, 10, 10);
-            collection.InsertOne(water1);
-
+            
         }
 
-        private void MongoAdd()
+        private void MongoAdd(Water water)
         {
-            double vUsed, vValue, vPriceM3, vPrice;
-            //Check if the thextbox is empty
-            if (string.IsNullOrEmpty(tbValue.Text) || string.IsNullOrEmpty(tbPriceM3.Text))
-                return;
-            //Check if the textbox contain only numbers
-            if (!double.TryParse(tbValue.Text, out vValue) || !double.TryParse(tbPriceM3.Text, out vPriceM3))
-                return;
-
-            var last_value = waterList.Count;
-            vUsed = vValue - waterList[last_value - 1].Value;
-
-            vPrice = vUsed * vPriceM3;
-            lbResult.Text = vUsed.ToString();
-
-            dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
-
-            Water water1 = new Water(dateTimePicker1.Value, vValue, vUsed, vPrice);
-            waterList.Add(water1);
-         
-            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
-            TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");
-            xs.Serialize(tw, waterList);
-            tw.Close();
+            var client = new MongoClient();
+            var db = client.GetDatabase("UtilitiesDB");
+            var collection = db.GetCollection<Water>("Water");
+            collection.InsertOne(water);
         }
 
         private void XmlConnect()
@@ -112,11 +86,12 @@ namespace UtilityBills
 
             Water water1 = new Water(dateTimePicker1.Value, vValue, vUsed, vPrice);
             waterList.Add(water1);
+            MongoAdd(water1);
 
-            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
-            TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");
-            xs.Serialize(tw, waterList);
-            tw.Close();
+            //XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
+            //TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");
+            //xs.Serialize(tw, waterList);
+            //tw.Close();
         }
     }
 }
