@@ -65,6 +65,19 @@ namespace UtilityBills
             //waterList.Add(new Water(1, dateTime, 10, 0, 0));
             //dataGridView1.Rows.Add(waterList[0].Date.ToString("dd/MM/yyyy"), waterList[0].Value, null, null);
         }
+        private void XmlAdd(Water water)
+        {
+            waterList.Add(water);
+            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
+            TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");
+            xs.Serialize(tw, waterList);
+            tw.Close();
+        }
+
+        private void CalsulateWater()
+        {
+
+        }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -85,13 +98,10 @@ namespace UtilityBills
             dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
 
             Water water1 = new Water(dateTimePicker1.Value, vValue, vUsed, vPrice);
-            waterList.Add(water1);
+            //XmlAdd(water1);
             MongoAdd(water1);
 
-            //XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
-            //TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");
-            //xs.Serialize(tw, waterList);
-            //tw.Close();
+
         }
     }
 }
