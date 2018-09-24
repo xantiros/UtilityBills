@@ -52,14 +52,14 @@ namespace UtilityBills
 
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void BtnAdd_Click(object sender, EventArgs e)
         {
-            double vUsed, vValue, vPriceM3, vPrice;
+            double vUsed, vPrice;
             //Check if the thextbox is empty
             if (string.IsNullOrEmpty(tbValue.Text) || string.IsNullOrEmpty(tbPriceM3.Text))
                 return;
             //Check if the textbox contain only numbers
-            if (!double.TryParse(tbValue.Text, out vValue) || !double.TryParse(tbPriceM3.Text, out vPriceM3))
+            if (!double.TryParse(tbValue.Text, out double vValue) || !double.TryParse(tbPriceM3.Text, out double vPriceM3))
                 return;
 
             var last_value = Uti.WaterList.Count;
@@ -71,13 +71,10 @@ namespace UtilityBills
             dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
 
             Water water1 = new Water(10, dateTimePicker1.Value, vValue, vUsed, vPrice);
+            Uti.WaterList.Add(water1);
             //XmlAdd(water1);
             //MongoAdd(water1);
 
-            foreach (var item in Uti.WaterList)
-            {
-                dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
-            }
         }
     }
 }
