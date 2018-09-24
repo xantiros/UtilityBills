@@ -23,7 +23,7 @@ namespace UtilityBills.Databases
             //var resultDoc = collection.Find(new BsonDocument()).ToList();
             //return Db.GetCollection<Water>("Water").AsQueryable().ToList();
 
-            var cooll = Db.GetCollection<Water>("Water").AsQueryable()
+            return Db.GetCollection<Water>("Water").AsQueryable()
                 .Select(x => new Water()
                 {
                     //Id = x.Id, //pobiera _id i wywala błąd trzebaby było zmienić nazwe z Id na np Idd...
@@ -31,9 +31,7 @@ namespace UtilityBills.Databases
                     Value = x.Value,
                     Amount = x.Amount,
                     Price = x.Price
-                });
-
-            return cooll.ToList();
+                }).ToList();
 
             //foreach (var item in waterList)
             //{
