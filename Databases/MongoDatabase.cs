@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UtilityBills.Interfaces;
 using UtilityBills.Models;
+using System.Linq;
 
 namespace UtilityBills.Databases
 {
@@ -20,7 +21,19 @@ namespace UtilityBills.Databases
             //var collection = db.GetCollection<Water>("Water");
             //var coll = db.GetCollection<Water>("Water").AsQueryable();
             //var resultDoc = collection.Find(new BsonDocument()).ToList();
-            return Db.GetCollection<Water>("Water").AsQueryable().ToList();
+            //return Db.GetCollection<Water>("Water").AsQueryable().ToList();
+
+            var cooll = Db.GetCollection<Water>("Water").AsQueryable()
+                .Select(x => new Water()
+                {
+                    //Id = x.Id, //pobiera _id i wywala błąd trzebaby było zmienić nazwe z Id na np Idd...
+                    Date = x.Date,
+                    Value = x.Value,
+                    Amount = x.Amount,
+                    Price = x.Price
+                });
+
+            return cooll.ToList();
 
             //foreach (var item in waterList)
             //{

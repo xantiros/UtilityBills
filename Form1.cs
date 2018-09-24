@@ -41,6 +41,10 @@ namespace UtilityBills
         private static IDatabase GetDatabas()
         {
             return new MongoDatabase();
+            //return new XmlDatabase();
+            //sterowanie - wybór bazy 
+            //if (/*some way to tell if should use MySql*/)
+            //    return new MySQLDatabase();
         }
 
         private void CalculateWater()
@@ -66,7 +70,7 @@ namespace UtilityBills
 
             dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
 
-            Water water1 = new Water(dateTimePicker1.Value, vValue, vUsed, vPrice);
+            Water water1 = new Water(10, dateTimePicker1.Value, vValue, vUsed, vPrice);
             //XmlAdd(water1);
             //MongoAdd(water1);
 
