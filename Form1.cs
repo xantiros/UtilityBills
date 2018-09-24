@@ -6,75 +6,44 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using UtilityBills.Models;
 using System.Linq;
+using UtilityBills.Interfaces;
+using UtilityBills.Databases;
 
 namespace UtilityBills
 {
     public partial class Form1 : Form
     {
-        List<Water> waterList = new List<Water>();
+        Utilities Uti = new Utilities();
+        
+        //List<Water> waterList = new List<Water>();
+
+        public IDatabase db = GetDatabas();
 
         public Form1()
         {
             InitializeComponent();
 
+            db.ConnectToDatabase();
+
+            //db.GetWaterList(Uti.WaterList);
+            Uti.WaterList = db.GetWaterList();
             //XmlConnect();
 
-            MongoDBConnect();
+            //MongoDBConnect();
 
-        }
-
-        private void MongoDBConnect()
-        {
-            var client = new MongoClient();
-            var db = client.GetDatabase("UtilitiesDB");
-
-            //var collection = db.GetCollection<Water>("Water");
-            //var coll = db.GetCollection<Water>("Water").AsQueryable();
-            //var resultDoc = collection.Find(new BsonDocument()).ToList();
-            waterList = db.GetCollection<Water>("Water").AsQueryable().ToList();
- 
-            foreach (var item in waterList)
-            {
-                dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
-            }
-            
-        }
-
-        private void MongoAdd(Water water)
-        {
-            var client = new MongoClient();
-            var db = client.GetDatabase("UtilitiesDB");
-            var collection = db.GetCollection<Water>("Water");
-            collection.InsertOne(water);
-        }
-
-        private void XmlConnect()
-        {
-            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
-            using (var sr = new StreamReader(@"C:\Users\bklima\source\repos\UtilityBills\water.xml"))
-            {
-                waterList = (List<Water>)xs.Deserialize(sr);
-            }
-            foreach (var item in waterList)
+            foreach (var item in Uti.WaterList)
             {
                 dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
             }
 
-            //first
-            //DateTime dateTime = new DateTime(2014, 5, 5);
-            //waterList.Add(new Water(1, dateTime, 10, 0, 0));
-            //dataGridView1.Rows.Add(waterList[0].Date.ToString("dd/MM/yyyy"), waterList[0].Value, null, null);
-        }
-        private void XmlAdd(Water water)
-        {
-            waterList.Add(water);
-            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
-            TextWriter tw = new StreamWriter(@"C:\Users\bklima\source\repos\UtilityBills\water.xml");
-            xs.Serialize(tw, waterList);
-            tw.Close();
         }
 
-        private void CalsulateWater()
+        private static IDatabase GetDatabas()
+        {
+            return new MongoDatabase();
+        }
+
+        private void CalculateWater()
         {
 
         }
@@ -89,8 +58,8 @@ namespace UtilityBills
             if (!double.TryParse(tbValue.Text, out vValue) || !double.TryParse(tbPriceM3.Text, out vPriceM3))
                 return;
 
-            var last_value = waterList.Count;
-            vUsed = vValue - waterList[last_value-1].Value;
+            var last_value = Uti.WaterList.Count;
+            vUsed = vValue - Uti.WaterList[last_value-1].Value;
 
             vPrice = vUsed * vPriceM3;
             lbResult.Text = vUsed.ToString();
@@ -99,9 +68,12 @@ namespace UtilityBills
 
             Water water1 = new Water(dateTimePicker1.Value, vValue, vUsed, vPrice);
             //XmlAdd(water1);
-            MongoAdd(water1);
+            //MongoAdd(water1);
 
-
+            foreach (var item in Uti.WaterList)
+            {
+                dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
+            }
         }
     }
 }
