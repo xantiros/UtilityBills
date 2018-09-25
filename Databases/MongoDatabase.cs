@@ -11,10 +11,14 @@ namespace UtilityBills.Databases
     {
         public IMongoDatabase Db { get; private set; }
 
+        public MongoClient Client { get; private set; }
+
+        public IMongoCollection<Water> Collection { get; private set; }
+
         public void ConnectToDatabase()
         {
-            var client = new MongoClient();
-            Db = client.GetDatabase("UtilitiesDB");
+            Client = new MongoClient();
+            Db = Client.GetDatabase("UtilitiesDB");
         }
         public List<Water> GetWaterList()
         {
@@ -23,7 +27,9 @@ namespace UtilityBills.Databases
             //var resultDoc = collection.Find(new BsonDocument()).ToList();
             //return Db.GetCollection<Water>("Water").AsQueryable().ToList();
 
-            return Db.GetCollection<Water>("Water").AsQueryable()
+            Collection = Db.GetCollection<Water>("Water");
+
+            return Collection.AsQueryable()
                 .Select(x => new Water(x.Date, x.Value, x.Amount, x.Price)).ToList();
 
             //Id = x.Id, //pobiera _id i wywala błąd trzebaby było zmienić nazwe z Id na np Idd...
@@ -34,16 +40,12 @@ namespace UtilityBills.Databases
             //}
         }
 
-        public void SaveToDatabase()
+        public void SaveToDatabase(Water water)
         {
-            throw new NotImplementedException();
-        }
-        private void MongoAdd(Water water)
-        {
-            var client = new MongoClient();
-            var db = client.GetDatabase("UtilitiesDB");
-            var collection = db.GetCollection<Water>("Water");
-            collection.InsertOne(water);
+            //var client = new MongoClient();
+            //var db = Client.GetDatabase("UtilitiesDB");
+            //var collection = Db.GetCollection<Water>("Water");
+            Collection.InsertOne(water);
         }
     }
 }

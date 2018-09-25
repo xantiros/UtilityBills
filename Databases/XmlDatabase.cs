@@ -10,30 +10,12 @@ namespace UtilityBills.Databases
     {
         public void ConnectToDatabase()
         {
-            throw new System.NotImplementedException();
+            //tu nie ma sie gdzie polaczyc
         }
 
         public void SaveToDatabase()
         {
             throw new System.NotImplementedException();
-        }
-
-        private void XmlConnect(List<Water> waterList)
-        {
-            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
-            using (var sr = new StreamReader(@"C:\Users\bklima\source\repos\UtilityBills\water.xml"))
-            {
-                waterList = (List<Water>)xs.Deserialize(sr);
-            }
-            foreach (var item in waterList)
-            {
-                //dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
-            }
-
-            //first
-            //DateTime dateTime = new DateTime(2014, 5, 5);
-            //waterList.Add(new Water(1, dateTime, 10, 0, 0));
-            //dataGridView1.Rows.Add(waterList[0].Date.ToString("dd/MM/yyyy"), waterList[0].Value, null, null);
         }
         private void XmlAdd(List<Water> waterList, Water water)
         {
@@ -45,6 +27,25 @@ namespace UtilityBills.Databases
         }
 
         public List<Water> GetWaterList()
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(List<Water>));
+            using (var sr = new StreamReader(@"C:\Users\bklima\source\repos\UtilityBills\water.xml"))
+            {
+               return (List<Water>)xs.Deserialize(sr);
+            }
+
+            //foreach (var item in waterList)
+            //{
+            //    //dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
+            //}
+
+            //first
+            //DateTime dateTime = new DateTime(2014, 5, 5);
+            //waterList.Add(new Water(1, dateTime, 10, 0, 0));
+            //dataGridView1.Rows.Add(waterList[0].Date.ToString("dd/MM/yyyy"), waterList[0].Value, null, null);
+        }
+
+        public void SaveToDatabase(Water water)
         {
             throw new System.NotImplementedException();
         }

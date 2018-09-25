@@ -7,6 +7,6 @@ namespace UtilityBills.Interfaces
     {
         void ConnectToDatabase();
         List<Water> GetWaterList();
-        void SaveToDatabase();
+        void SaveToDatabase(Water water);
     }
 }

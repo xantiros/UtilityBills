@@ -14,7 +14,8 @@ namespace UtilityBills
     public partial class Form1 : Form
     {
         Utilities Uti = new Utilities();
-        
+        double vUsed, vPrice, vValue, vPriceM3;
+
         //List<Water> waterList = new List<Water>();
 
         public IDatabase db = GetDatabas();
@@ -25,14 +26,9 @@ namespace UtilityBills
 
             db.ConnectToDatabase();
 
-            //db.GetWaterList(Uti.WaterList);
-            //Utilities Uti = new Utilities(db.GetWaterList());
             Uti.SetWaterList(db.GetWaterList()); // Uti.WaterList = db.GetWaterList();
 
-            //XmlConnect();
-
-            //MongoDBConnect();
-
+            //show list
             foreach (var item in Uti.WaterList)
             {
                 dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
@@ -43,7 +39,7 @@ namespace UtilityBills
         private static IDatabase GetDatabas()
         {
             return new MongoDatabase();
-            //return new XmlDatabase();
+            //return new XmlDatabase(); //xml nie serializuje prywatnych i protested pól
             //sterowanie - wybór bazy 
             //if (/*some way to tell if should use MySql*/)
             //    return new MySQLDatabase();
@@ -51,32 +47,35 @@ namespace UtilityBills
 
         private void CalculateWater()
         {
-
-        }
-
-        private void BtnAdd_Click(object sender, EventArgs e)
-        {
-            double vUsed, vPrice;
-            //Check if the thextbox is empty
-            if (string.IsNullOrEmpty(tbValue.Text) || string.IsNullOrEmpty(tbPriceM3.Text))
-                return;
-            //Check if the textbox contain only numbers
-            if (!double.TryParse(tbValue.Text, out double vValue) || !double.TryParse(tbPriceM3.Text, out double vPriceM3))
-                return;
-
             var last_value = Uti.WaterList.Count;
-            vUsed = vValue - Uti.WaterList[last_value-1].Value;
+            vUsed = vValue - Uti.WaterList[last_value - 1].Value;
 
             vPrice = vUsed * vPriceM3;
             lbResult.Text = vUsed.ToString();
 
+            var water = new Water(Convert.ToInt32($"{dateTimePicker1.Value.Year}{dateTimePicker1.Value.Month}{dateTimePicker1.Value.Day}"), 
+                dateTimePicker1.Value, vValue, vUsed, vPrice);
+            //bez id narazie
+            //var water = new Water(dateTimePicker1.Value, vValue, vUsed, vPrice);
+            Uti.WaterList.Add(water);
+
+            db.SaveToDatabase(water);
+        }
+
+        private void BtnAdd_Click(object sender, EventArgs e)
+        {
+            
+            //Check if the thextbox is empty
+            if (string.IsNullOrEmpty(tbValue.Text) || string.IsNullOrEmpty(tbPriceM3.Text))
+                return;
+            //Check if the textbox contain only numbers
+            if (!double.TryParse(tbValue.Text, out vValue) || !double.TryParse(tbPriceM3.Text, out vPriceM3))
+                return;
+
+            CalculateWater();
+
+            //show
             dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
-
-            Water water1 = new Water(10, dateTimePicker1.Value, vValue, vUsed, vPrice);
-            Uti.WaterList.Add(water1);
-            //XmlAdd(water1);
-            //MongoAdd(water1);
-
         }
     }
 }
