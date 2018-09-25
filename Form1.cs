@@ -26,7 +26,9 @@ namespace UtilityBills
             db.ConnectToDatabase();
 
             //db.GetWaterList(Uti.WaterList);
-            Uti.WaterList = db.GetWaterList();
+            //Utilities Uti = new Utilities(db.GetWaterList());
+            Uti.SetWaterList(db.GetWaterList()); // Uti.WaterList = db.GetWaterList();
+
             //XmlConnect();
 
             //MongoDBConnect();

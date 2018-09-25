@@ -24,14 +24,9 @@ namespace UtilityBills.Databases
             //return Db.GetCollection<Water>("Water").AsQueryable().ToList();
 
             return Db.GetCollection<Water>("Water").AsQueryable()
-                .Select(x => new Water()
-                {
-                    //Id = x.Id, //pobiera _id i wywala błąd trzebaby było zmienić nazwe z Id na np Idd...
-                    Date = x.Date,
-                    Value = x.Value,
-                    Amount = x.Amount,
-                    Price = x.Price
-                }).ToList();
+                .Select(x => new Water(x.Date, x.Value, x.Amount, x.Price)).ToList();
+
+            //Id = x.Id, //pobiera _id i wywala błąd trzebaby było zmienić nazwe z Id na np Idd...
 
             //foreach (var item in waterList)
             //{
