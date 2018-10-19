@@ -6,7 +6,7 @@ namespace UtilityBills
     public class Utility
     {
         //powinno byc private ale serializacja nie działa
-        public int Id { get; protected set; } //rokmiesiacdzien
+        public int Id { get; protected set; } //rokmiesiacdzien ewentualnie Guid
         public DateTime Date { get; protected set; }
         public double Value { get; protected set; }
         public double Amount { get; protected set; }

@@ -16,8 +16,6 @@ namespace UtilityBills
         Utilities Uti = new Utilities();
         double vUsed, vPrice, vValue, vPriceM3;
 
-        //List<Water> waterList = new List<Water>();
-
         public IDatabase db = GetDatabas();
 
         public Form1()
@@ -38,7 +36,8 @@ namespace UtilityBills
 
         private static IDatabase GetDatabas()
         {
-            return new MongoDatabase();
+            return new SQLiteDatabase();
+            //return new MongoDatabase();
             //return new XmlDatabase(); //xml nie serializuje prywatnych i protested pól
             //sterowanie - wybór bazy 
             //if (/*some way to tell if should use MySql*/)
@@ -55,8 +54,6 @@ namespace UtilityBills
 
             var water = new Water(Convert.ToInt32($"{dateTimePicker1.Value.Year}{dateTimePicker1.Value.Month}{dateTimePicker1.Value.Day}"), 
                 dateTimePicker1.Value, vValue, vUsed, vPrice);
-            //bez id narazie
-            //var water = new Water(dateTimePicker1.Value, vValue, vUsed, vPrice);
             Uti.WaterList.Add(water);
 
             db.SaveToDatabase(water);
