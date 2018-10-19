@@ -47,7 +47,10 @@ namespace UtilityBills
         private void CalculateWater()
         {
             var last_value = Uti.WaterList.Count;
-            vUsed = vValue - Uti.WaterList[last_value - 1].Value;
+            if (last_value == 0)
+                vUsed = 0;
+            else
+                vUsed = vValue - Uti.WaterList[last_value - 1].Value;
 
             vPrice = vUsed * vPriceM3;
             lbResult.Text = vUsed.ToString();
