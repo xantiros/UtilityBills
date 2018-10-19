@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data;
+using System.Data.SQLite;
 using UtilityBills.Interfaces;
 using UtilityBills.Models;
 
@@ -8,7 +10,10 @@ namespace UtilityBills.Databases
     {
         public void ConnectToDatabase()
         {
-            throw new System.NotImplementedException();
+            using (IDbConnection con = new SQLiteConnection("Data Source=UtilitiesDB.db"))
+            {
+
+            }
         }
 
         public List<Water> GetWaterList()
