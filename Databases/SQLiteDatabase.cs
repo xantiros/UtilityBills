@@ -29,13 +29,17 @@ namespace UtilityBills.Databases
                 var waters = SQLiteConnection.Query<Water>("select * from water", new DynamicParameters());
                 return waters.ToList();
             //}
-
+        }
+        public List<Utility> GetUtilities(string utility)
+        {
+            var Utility = SQLiteConnection.Query<Utility>($"select * from {utility}", new DynamicParameters());
+            return Utility.ToList();
         }
         public void SaveToDatabase(Water water)
         {
             //using (SQLiteConnection)
             //{
-                SQLiteConnection.Execute("insert into water (guid, date, value, amount, unitprice, totalprice) values (@guid, @date, @value, @amount, @unitprice, @totalprice)", water);
+                SQLiteConnection.Execute("insert into water (date, value, amount, unitprice, totalprice) values (@date, @value, @amount, @unitprice, @totalprice)", water);
             //}
 
         }

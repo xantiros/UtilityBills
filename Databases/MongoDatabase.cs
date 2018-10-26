@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace UtilityBills.Databases
 {
-    public class MongoDatabase : IDatabase
+    public class MongoDatabase //: IDatabase
     {
         public IMongoDatabase Db { get; private set; }
 

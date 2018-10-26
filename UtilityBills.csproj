@@ -84,6 +84,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IDatabase.cs" />
+    <Compile Include="Models\Gas.cs" />
     <Compile Include="Models\Utilities.cs" />
     <Compile Include="Models\Water.cs" />
     <Compile Include="Program.cs" />

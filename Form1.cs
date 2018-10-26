@@ -24,14 +24,17 @@ namespace UtilityBills
 
             db.ConnectToDatabase();
 
-            Uti.SetWaterList(db.GetWaterList()); // Uti.WaterList = db.GetWaterList();
+            Uti.SetUtilityList(db.GetUtilities("water")); // Uti.WaterList = db.GetWaterList();
 
-            //show list
-            foreach (var item in Uti.WaterList)
+            //show lists
+            foreach (var item in Uti.UtilityList)
             {
                 dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.UnitPrice, item.TotalPrice);
             }
-
+            foreach (var item in Uti.UtilityList)
+            {
+                dataGridView2.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.UnitPrice, item.TotalPrice);
+            }
         }
 
         private static IDatabase GetDatabas()
@@ -46,18 +49,18 @@ namespace UtilityBills
 
         private void CalculateWater()
         {
-            var last_value = Uti.WaterList.Count;
+            var last_value = Uti.UtilityList.Count;
             if (last_value == 0)
                 vUsed = 0;
             else
-                vUsed = vValue - Uti.WaterList[last_value - 1].Value;
+                vUsed = vValue - Uti.UtilityList[last_value - 1].Value;
 
             vTotalPrice = vUsed * vUnitPrice;
             lbResult.Text = vUsed.ToString();
 
             var water = new Water(Convert.ToInt32($"{dateTimePicker1.Value.Year}{dateTimePicker1.Value.Month}{dateTimePicker1.Value.Day}"), 
                 dateTimePicker1.Value, vValue, vUsed, vUnitPrice, vTotalPrice);
-            Uti.WaterList.Add(water);
+            Uti.UtilityList.Add(water);
 
             db.SaveToDatabase(water);
         }
@@ -72,10 +75,21 @@ namespace UtilityBills
             if (!double.TryParse(tbValue.Text, out vValue) || !double.TryParse(tbPriceM3.Text, out vUnitPrice))
                 return;
 
-            CalculateWater();
+            if (tabControl1.SelectedTab == tpWather)
+            {
+                CalculateWater();
 
-            //show
-            dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vUnitPrice, vTotalPrice);
+                //show
+                dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vUnitPrice, vTotalPrice);
+            }
+            else if (tabControl1.SelectedTab == tpGas)
+            {
+                CalculateWater();
+
+                //show
+                dataGridView2.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vUnitPrice, vTotalPrice);
+            }
+
         }
     }
 }

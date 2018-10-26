@@ -6,7 +6,7 @@ using UtilityBills.Models;
 
 namespace UtilityBills.Databases
 {
-    public class XmlDatabase : IDatabase
+    public class XmlDatabase //: IDatabase
     {
         public void ConnectToDatabase()
         {
