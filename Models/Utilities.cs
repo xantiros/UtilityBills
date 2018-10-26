@@ -4,19 +4,26 @@ namespace UtilityBills.Models
 {
     public class Utilities
     {
-        public List<Utility> UtilityList { get; protected set; }
+        public List<Utility> WaterList { get; protected set; }
+
+        public List<Utility> GasList { get; protected set; }
 
         public Utilities()
         {
         }
-        public Utilities(List<Utility> utilityList)
+        public Utilities(List<Utility> waterList)
         {
-            UtilityList = utilityList;
+            WaterList = waterList;
         }
-        public void SetUtilityList(List<Utility> utilityList)
+        public void SeWaterList(List<Utility> waterList)
         {
             //add some validation? 
-            UtilityList = utilityList;
+            WaterList = waterList;
+        }
+        public void SetGasList(List<Utility> gasList)
+        {
+            //add some validation? 
+            GasList = gasList;
         }
     }
 }

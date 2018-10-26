@@ -6,8 +6,7 @@ namespace UtilityBills.Interfaces
     public interface IDatabase
     {
         void ConnectToDatabase();
-        List<Water> GetWaterList();
         List<Utility> GetUtilities(string utility);
-        void SaveToDatabase(Water water);
+        void SaveToDatabase(Utility utility);
     }
 }

@@ -24,14 +24,16 @@ namespace UtilityBills
 
             db.ConnectToDatabase();
 
-            Uti.SetUtilityList(db.GetUtilities("water")); // Uti.WaterList = db.GetWaterList();
+            Uti.SeWaterList(db.GetUtilities("water")); // Uti.WaterList = db.GetWaterList();
+
+            Uti.SetGasList(db.GetUtilities("gas"));
 
             //show lists
-            foreach (var item in Uti.UtilityList)
+            foreach (var item in Uti.WaterList)
             {
                 dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.UnitPrice, item.TotalPrice);
             }
-            foreach (var item in Uti.UtilityList)
+            foreach (var item in Uti.GasList)
             {
                 dataGridView2.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.UnitPrice, item.TotalPrice);
             }
@@ -49,18 +51,18 @@ namespace UtilityBills
 
         private void CalculateWater()
         {
-            var last_value = Uti.UtilityList.Count;
+            var last_value = Uti.WaterList.Count;
             if (last_value == 0)
                 vUsed = 0;
             else
-                vUsed = vValue - Uti.UtilityList[last_value - 1].Value;
+                vUsed = vValue - Uti.WaterList[last_value - 1].Value;
 
             vTotalPrice = vUsed * vUnitPrice;
             lbResult.Text = vUsed.ToString();
 
             var water = new Water(Convert.ToInt32($"{dateTimePicker1.Value.Year}{dateTimePicker1.Value.Month}{dateTimePicker1.Value.Day}"), 
                 dateTimePicker1.Value, vValue, vUsed, vUnitPrice, vTotalPrice);
-            Uti.UtilityList.Add(water);
+            Uti.WaterList.Add(water);
 
             db.SaveToDatabase(water);
         }
@@ -84,12 +86,30 @@ namespace UtilityBills
             }
             else if (tabControl1.SelectedTab == tpGas)
             {
-                CalculateWater();
+                CalculateGas();
 
                 //show
                 dataGridView2.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vUnitPrice, vTotalPrice);
             }
 
+        }
+
+        private void CalculateGas()
+        {
+            var last_value = Uti.GasList.Count;
+            if (last_value == 0)
+                vUsed = 0;
+            else
+                vUsed = vValue - Uti.GasList[last_value - 1].Value;
+
+            vTotalPrice = vUsed * vUnitPrice;
+            lbResult.Text = vUsed.ToString();
+
+            var gas = new Gas(Convert.ToInt32($"{dateTimePicker1.Value.Year}{dateTimePicker1.Value.Month}{dateTimePicker1.Value.Day}"),
+                dateTimePicker1.Value, vValue, vUsed, vUnitPrice, vTotalPrice);
+            Uti.GasList.Add(gas);
+
+            db.SaveToDatabase(gas);
         }
     }
 }
