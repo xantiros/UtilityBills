@@ -35,7 +35,7 @@ namespace UtilityBills.Databases
         {
             //using (SQLiteConnection)
             //{
-                SQLiteConnection.Execute("insert into water (date, value, amount, price) values (@date, @value, @amount, @price)", water);
+                SQLiteConnection.Execute("insert into water (guid, date, value, amount, unitprice, totalprice) values (@guid, @date, @value, @amount, @unitprice, @totalprice)", water);
             //}
 
         }

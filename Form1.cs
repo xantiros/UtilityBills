@@ -14,7 +14,7 @@ namespace UtilityBills
     public partial class Form1 : Form
     {
         Utilities Uti = new Utilities();
-        double vUsed, vPrice, vValue, vPriceM3;
+        double vUsed, vTotalPrice, vValue, vUnitPrice;
 
         public IDatabase db = GetDatabas();
 
@@ -29,7 +29,7 @@ namespace UtilityBills
             //show list
             foreach (var item in Uti.WaterList)
             {
-                dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.Price);
+                dataGridView1.Rows.Add(item.Date.ToString("dd/MM/yyyy"), item.Value, item.Amount, item.UnitPrice, item.TotalPrice);
             }
 
         }
@@ -52,11 +52,11 @@ namespace UtilityBills
             else
                 vUsed = vValue - Uti.WaterList[last_value - 1].Value;
 
-            vPrice = vUsed * vPriceM3;
+            vTotalPrice = vUsed * vUnitPrice;
             lbResult.Text = vUsed.ToString();
 
             var water = new Water(Convert.ToInt32($"{dateTimePicker1.Value.Year}{dateTimePicker1.Value.Month}{dateTimePicker1.Value.Day}"), 
-                dateTimePicker1.Value, vValue, vUsed, vPrice);
+                dateTimePicker1.Value, vValue, vUsed, vUnitPrice, vTotalPrice);
             Uti.WaterList.Add(water);
 
             db.SaveToDatabase(water);
@@ -69,13 +69,13 @@ namespace UtilityBills
             if (string.IsNullOrEmpty(tbValue.Text) || string.IsNullOrEmpty(tbPriceM3.Text))
                 return;
             //Check if the textbox contain only numbers
-            if (!double.TryParse(tbValue.Text, out vValue) || !double.TryParse(tbPriceM3.Text, out vPriceM3))
+            if (!double.TryParse(tbValue.Text, out vValue) || !double.TryParse(tbPriceM3.Text, out vUnitPrice))
                 return;
 
             CalculateWater();
 
             //show
-            dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vPrice);
+            dataGridView1.Rows.Add(dateTimePicker1.Value.ToString("dd/MM/yyyy"), vValue.ToString(), vUsed.ToString(), vUnitPrice, vTotalPrice);
         }
     }
 }

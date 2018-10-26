@@ -29,7 +29,7 @@ namespace UtilityBills.Databases
             Collection = Db.GetCollection<Water>("Water");
 
             return Collection.AsQueryable()
-                .Select(x => new Water(x.Date, x.Value, x.Amount, x.Price)).ToList();
+                .Select(x => new Water(x.Date, x.Value, x.Amount, x.UnitPrice, x.TotalPrice)).ToList();
 
             //Id = x.Id, //pobiera _id i wywala błąd trzebaby było zmienić nazwe z Id na np Idd...
 
